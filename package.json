@@ -1,0 +1,19 @@
+{
+  "name": "backrooms-procedural-horror",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node tests/verify-stage1.js && node tests/verify-stage2.js && node tests/verify-stage3.js && node tests/verify-stage4.js && node tests/verify-stage5.js",
+    "qa": "node tests/qa-audit.js"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

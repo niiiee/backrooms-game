@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE BACKROOMS // FOUND FOOTAGE ARCHIVE</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-dark: #070705;
+      --yellow-primary: #d4c26a;
+      --yellow-dim: #8a7c3d;
+      --danger: #c93b2b;
+      --accent-cyan: #5bc0be;
+      --font-mono: 'Courier New', Courier, monospace;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      font-family: var(--font-mono);
+      color: #e6dfc5;
+    }
+    #game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    canvas#game-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #fx-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    #ui-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .interactive-ui {
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas" layoutsubtree></canvas>
+    <div id="fx-overlay"></div>
+    <div id="ui-layer"></div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
