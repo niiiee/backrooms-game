@@ -53,8 +53,24 @@ export class InputManager {
       return codes;
     };
 
+    if (this.canvas && typeof this.canvas.setAttribute === 'function') {
+      this.canvas.setAttribute('tabindex', '0');
+      this.canvas.style.outline = 'none';
+    }
+
     this._onKeyDown = (e) => {
       const codes = this._resolveCodes(e);
+      if (
+        this.state.mode === 'PLAYING' &&
+        (codes.includes('ArrowUp') ||
+          codes.includes('ArrowDown') ||
+          codes.includes('ArrowLeft') ||
+          codes.includes('ArrowRight') ||
+          codes.includes('Space') ||
+          codes.includes('Tab'))
+      ) {
+        e.preventDefault();
+      }
       for (const code of codes) {
         if (!this.keys.has(code)) {
           this.justPressed.add(code);
@@ -71,6 +87,12 @@ export class InputManager {
     };
 
     this._onMouseDown = (e) => {
+      try {
+        window.focus();
+        if (this.canvas && this.canvas.focus) this.canvas.focus();
+      } catch {
+        // Ignore cross-origin focus restrictions
+      }
       if (this.state.mode !== 'PLAYING') return;
       if (e.button === 2) {
         this.justPressed.add('MouseRight');
@@ -78,8 +100,8 @@ export class InputManager {
     };
 
     this._onMouseMove = (e) => {
-      if (!this.isPointerLocked && this.state.mode !== 'PLAYING') return;
-      if (this.isPointerLocked) {
+      if (this.state.mode !== 'PLAYING') return;
+      if (this.isPointerLocked || (e.buttons & 1) === 1) {
         this.mouseDeltaX += e.movementX || 0;
         this.mouseDeltaY += e.movementY || 0;
       }
@@ -89,7 +111,7 @@ export class InputManager {
       this.isPointerLocked = document.pointerLockElement === this.canvas;
     };
 
-    window.addEventListener('keydown', this._onKeyDown);
+    window.addEventListener('keydown', this._onKeyDown, { passive: false });
     window.addEventListener('keyup', this._onKeyUp);
     window.addEventListener('mousedown', this._onMouseDown);
     window.addEventListener('mousemove', this._onMouseMove);
@@ -100,6 +122,12 @@ export class InputManager {
     });
 
     this.canvas.addEventListener('click', () => {
+      try {
+        window.focus();
+        if (this.canvas && this.canvas.focus) this.canvas.focus();
+      } catch {
+        // Ignore
+      }
       if (this.state.mode === 'PLAYING' && !this.isPointerLocked) {
         this.requestPointerLock();
       }
